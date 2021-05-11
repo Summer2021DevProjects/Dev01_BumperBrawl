@@ -13,6 +13,11 @@ public class Bumper_Controller : MonoBehaviour
     public float m_groundCheckLength;
     public LayerMask m_groundLayers;
 
+    [Header("Dashing")]
+    public float m_dashChargeLength;
+    public float m_maxDashForce;
+    public Renderer m_dashIndicatorObj;
+
 
 
     //--- Private Variables ---//
@@ -22,6 +27,10 @@ public class Bumper_Controller : MonoBehaviour
     private Vector3 m_forceToApply;
     private bool m_isGrounded;
     private Vector3 m_startPos;
+    private bool m_isChargingDash;
+    private float m_currentDashTimer;
+    private float m_dashForceMagnitude;
+    private float m_dashChargePercent;
 
 
 
@@ -39,22 +48,47 @@ public class Bumper_Controller : MonoBehaviour
         m_forceToApply = Vector3.zero;
         m_isGrounded = true;
         m_startPos = this.transform.position;
+        m_isChargingDash = false;
+        m_dashChargePercent = 0.0f;
     }
 
     private void Update()
     {
-        // Check to see if the bumper is grounded. This way, we can disable movement controls if it isn't
-        var thisPos = this.transform.position;
-        m_isGrounded = Physics.Raycast(thisPos, Vector3.down, m_groundCheckLength, m_groundLayers);
+        if (m_isChargingDash)
+        {
+            // Increase the dash timer
+            m_currentDashTimer += Time.deltaTime;
+            m_dashChargePercent = Mathf.Clamp(m_currentDashTimer / m_dashChargeLength, 0.0f, 1.0f);
+        }
+        else
+        {
+            // Check to see if the bumper is grounded. This way, we can disable movement controls if it isn't
+            var thisPos = this.transform.position;
+            m_isGrounded = Physics.Raycast(thisPos, Vector3.down, m_groundCheckLength, m_groundLayers);
+        }
+
+        // TEMP: Change the colour to show the charging feedback
+        m_dashIndicatorObj.material.color = Color.Lerp(Color.red, Color.green, m_dashChargePercent);
     }
 
     private void FixedUpdate()
     {
-        // Apply the calculated and stored force
-        if (m_isGrounded)
+        if (m_isGrounded && !m_isChargingDash)
         {
+            // Apply the calculated and stored movement force
             m_body.AddForce(m_forceToApply, ForceMode.Force);
-            m_body.velocity = Vector3.ClampMagnitude(m_body.velocity, m_maxVel);
+            //m_body.velocity = Vector3.ClampMagnitude(m_body.velocity, m_maxVel);
+
+            // Add the dash force on top if there was one
+            var m_dashForceToAdd = m_forceToApply.normalized * m_dashForceMagnitude;
+            m_body.AddForce(m_dashForceToAdd, ForceMode.Impulse);
+            m_dashForceMagnitude = 0.0f;
+        }
+
+        if (m_isChargingDash)
+        {
+            m_body.velocity = Vector3.zero;
+            m_body.angularVelocity = Vector3.zero;
         }
     }
 
@@ -90,5 +124,22 @@ public class Bumper_Controller : MonoBehaviour
         this.transform.rotation = Quaternion.identity;
         m_body.velocity = Vector3.zero;
         m_body.angularVelocity = Vector3.zero;
+    }
+
+    public void Dash(InputAction.CallbackContext _context)
+    {
+        m_isChargingDash = !_context.canceled;
+
+        // If just letting go of the dash button now, trigger the dash
+        // This entails calculating the amount of force to apply in the next fixed update
+        if (_context.canceled)
+        {
+            m_dashForceMagnitude = m_dashChargePercent * m_maxDashForce;
+            m_dashChargePercent = 0.0f;
+            m_currentDashTimer = 0.0f;
+
+            m_body.velocity = Vector3.zero;
+            m_body.angularVelocity = Vector3.zero;
+        }
     }
 }

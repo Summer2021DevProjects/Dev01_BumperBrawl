@@ -14,6 +14,14 @@
                     "interactions": ""
                 },
                 {
+                    "name": "Dash",
+                    "type": "Value",
+                    "id": "78ee3ea0-60db-4d1c-b522-70ecae14cdab",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
                     "name": "Reset",
                     "type": "Button",
                     "id": "dfdb537f-78f1-440f-816f-c4fcb32faef8",
@@ -147,7 +155,7 @@
                 {
                     "name": "",
                     "id": "a7a1b7e1-c86e-4e91-8282-18ae08a2acd0",
-                    "path": "<Keyboard>/space",
+                    "path": "<Keyboard>/r",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard and Mouse",
@@ -158,11 +166,33 @@
                 {
                     "name": "",
                     "id": "b1ac96e3-1a71-4ec6-814f-cbd84de5777b",
-                    "path": "<Gamepad>/buttonSouth",
+                    "path": "<Gamepad>/start",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Reset",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "86292a90-8512-4130-8cac-8845fd28d251",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "82dd108c-aaf6-4786-a453-defa7ae8400c",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Dash",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -27,6 +27,14 @@ public class @InputDefinitions : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
+                    ""name"": ""Dash"",
+                    ""type"": ""Value"",
+                    ""id"": ""78ee3ea0-60db-4d1c-b522-70ecae14cdab"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
                     ""name"": ""Reset"",
                     ""type"": ""Button"",
                     ""id"": ""dfdb537f-78f1-440f-816f-c4fcb32faef8"",
@@ -160,7 +168,7 @@ public class @InputDefinitions : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""a7a1b7e1-c86e-4e91-8282-18ae08a2acd0"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""path"": ""<Keyboard>/r"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard and Mouse"",
@@ -171,11 +179,33 @@ public class @InputDefinitions : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""b1ac96e3-1a71-4ec6-814f-cbd84de5777b"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""path"": ""<Gamepad>/start"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Reset"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""86292a90-8512-4130-8cac-8845fd28d251"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""82dd108c-aaf6-4786-a453-defa7ae8400c"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -215,6 +245,7 @@ public class @InputDefinitions : IInputActionCollection, IDisposable
         // PlayerControls
         m_PlayerControls = asset.FindActionMap("PlayerControls", throwIfNotFound: true);
         m_PlayerControls_Move = m_PlayerControls.FindAction("Move", throwIfNotFound: true);
+        m_PlayerControls_Dash = m_PlayerControls.FindAction("Dash", throwIfNotFound: true);
         m_PlayerControls_Reset = m_PlayerControls.FindAction("Reset", throwIfNotFound: true);
     }
 
@@ -266,12 +297,14 @@ public class @InputDefinitions : IInputActionCollection, IDisposable
     private readonly InputActionMap m_PlayerControls;
     private IPlayerControlsActions m_PlayerControlsActionsCallbackInterface;
     private readonly InputAction m_PlayerControls_Move;
+    private readonly InputAction m_PlayerControls_Dash;
     private readonly InputAction m_PlayerControls_Reset;
     public struct PlayerControlsActions
     {
         private @InputDefinitions m_Wrapper;
         public PlayerControlsActions(@InputDefinitions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_PlayerControls_Move;
+        public InputAction @Dash => m_Wrapper.m_PlayerControls_Dash;
         public InputAction @Reset => m_Wrapper.m_PlayerControls_Reset;
         public InputActionMap Get() { return m_Wrapper.m_PlayerControls; }
         public void Enable() { Get().Enable(); }
@@ -285,6 +318,9 @@ public class @InputDefinitions : IInputActionCollection, IDisposable
                 @Move.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnMove;
                 @Move.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnMove;
                 @Move.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnMove;
+                @Dash.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnDash;
+                @Dash.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnDash;
+                @Dash.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnDash;
                 @Reset.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnReset;
                 @Reset.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnReset;
                 @Reset.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnReset;
@@ -295,6 +331,9 @@ public class @InputDefinitions : IInputActionCollection, IDisposable
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
+                @Dash.started += instance.OnDash;
+                @Dash.performed += instance.OnDash;
+                @Dash.canceled += instance.OnDash;
                 @Reset.started += instance.OnReset;
                 @Reset.performed += instance.OnReset;
                 @Reset.canceled += instance.OnReset;
@@ -323,6 +362,7 @@ public class @InputDefinitions : IInputActionCollection, IDisposable
     public interface IPlayerControlsActions
     {
         void OnMove(InputAction.CallbackContext context);
+        void OnDash(InputAction.CallbackContext context);
         void OnReset(InputAction.CallbackContext context);
     }
 }
