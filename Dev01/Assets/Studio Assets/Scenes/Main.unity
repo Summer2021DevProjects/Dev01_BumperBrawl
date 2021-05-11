@@ -613,7 +613,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 9bb01f233b1fb2d42a03a706589e7553, type: 3}
       propertyPath: m_Name
-      value: Bumper
+      value: BumperMesh
       objectReference: {fileID: 0}
     - target: {fileID: 5388542244627124664, guid: 9bb01f233b1fb2d42a03a706589e7553, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -757,6 +757,23 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9bb01f233b1fb2d42a03a706589e7553, type: 3}
   m_PrefabInstance: {fileID: 1178123722}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1638521594 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 82a2914d8f86c62488456950c8330e38, type: 3}
+  m_PrefabInstance: {fileID: 2042301742}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1638521595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1638521594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 101cc329a5cbd6a41aba2085b9d771e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1661076951
 GameObject:
   m_ObjectHideFlags: 0
@@ -788,7 +805,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 1.68, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
-  - {fileID: 2063174817}
+  - {fileID: 1838682085}
   m_Father: {fileID: 2011647192}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -805,6 +822,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_dashVisuals: {fileID: 2063174820}
+  m_charVisuals: {fileID: 1638521595}
   m_maxVel: 7.5
   m_moveForce: 30
   m_groundLayers:
@@ -14273,6 +14291,38 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
+--- !u!1 &1838682084
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1838682085}
+  m_Layer: 0
+  m_Name: Bumper_Visuals
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1838682085
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1838682084}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 2063174817}
+  - {fileID: 2042301743}
+  m_Father: {fileID: 1661076952}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2011647191
 GameObject:
   m_ObjectHideFlags: 0
@@ -14372,8 +14422,12 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 2063174817}
+    m_TransformParent: {fileID: 1838682085}
     m_Modifications:
+    - target: {fileID: -6057140222963153312, guid: 82a2914d8f86c62488456950c8330e38, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 3e1fe735d1268fb4da31b38afbc69ade, type: 2}
     - target: {fileID: -4216859302048453862, guid: 82a2914d8f86c62488456950c8330e38, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -14396,7 +14450,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 82a2914d8f86c62488456950c8330e38, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.442
+      value: -0.901
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 82a2914d8f86c62488456950c8330e38, type: 3}
       propertyPath: m_LocalPosition.z
@@ -14408,15 +14462,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 82a2914d8f86c62488456950c8330e38, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 82a2914d8f86c62488456950c8330e38, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 82a2914d8f86c62488456950c8330e38, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 82a2914d8f86c62488456950c8330e38, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -14432,7 +14486,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 82a2914d8f86c62488456950c8330e38, type: 3}
       propertyPath: m_Name
-      value: Jammo_LowPoly
+      value: Bumper_VisualsChar
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 82a2914d8f86c62488456950c8330e38, type: 3}
@@ -14454,7 +14508,7 @@ GameObject:
   - component: {fileID: 2063174818}
   - component: {fileID: 2063174820}
   m_Layer: 0
-  m_Name: Bumper_Visuals
+  m_Name: Bumper_VisualsDash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14472,8 +14526,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1539021937}
-  - {fileID: 2042301743}
-  m_Father: {fileID: 1661076952}
+  m_Father: {fileID: 1838682085}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &2063174818

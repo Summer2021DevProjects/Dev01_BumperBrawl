@@ -5,7 +5,8 @@ public class Bumper_Controls : MonoBehaviour
 {
     //--- Public Variables ---//
     [Header("Visuals")]
-    public Bumper_DashVisuals m_dashVisuals;
+    public Bumper_VisualsDash m_dashVisuals;
+    public Bumper_VisualsCharacter m_charVisuals;
 
     [Header("Movement Controls")]
     public float m_maxVel;
@@ -34,6 +35,7 @@ public class Bumper_Controls : MonoBehaviour
     private Vector2 m_baseDragVals;
     private float m_currentDashCooldown;
     private bool m_dashCoolingDown;
+    private Vector3 m_lastMovementDir;
 
 
 
@@ -52,6 +54,7 @@ public class Bumper_Controls : MonoBehaviour
         m_baseDragVals = new Vector2(m_body.drag, m_body.angularDrag);
         m_currentDashCooldown = 0.0f;
         m_dashCoolingDown = false;
+        m_lastMovementDir = transform.forward;
 
         // Disable the dash visuals at the start so the ball just rotates normally with physics
         m_dashVisuals.enabled = false;
@@ -78,6 +81,10 @@ public class Bumper_Controls : MonoBehaviour
                 m_dashCoolingDown = false;
             }
         }
+
+        // Determine the dash direction. If there is no input, the dash direction is the last movement direction
+        // This way, dashes can still be performed even if there is no input at the time
+        Vector3 dashDir = (movementRelative == Vector3.zero) ? m_lastMovementDir : movementRelative;
 
         // Determine the different effects depending on if dash is being used or not
         switch (m_lastDashInput)
@@ -107,7 +114,7 @@ public class Bumper_Controls : MonoBehaviour
                 if (m_isGrounded)
                 {
                     float dashChargePercent = Mathf.Clamp(m_dashChargeTime / m_dashChargeLength, 0.0f, 1.0f);
-                    m_body.AddForce(movementRelative * dashChargePercent * m_maxDashForce, ForceMode.Impulse);
+                    m_body.AddForce(dashDir * dashChargePercent * m_maxDashForce, ForceMode.Impulse);
                 }
 
                 m_body.drag = m_baseDragVals.x;
@@ -135,9 +142,20 @@ public class Bumper_Controls : MonoBehaviour
         float chargeT = Mathf.Clamp(m_dashChargeTime / m_dashChargeLength, 0.0f, 1.0f);
         m_dashIndicatorObj.material.color = Color.Lerp(Color.red, Color.green, chargeT);
 
+        // If there is no input currently on t
         // Update the dash visuals so the ball spins independently to match the desired dash direction
         if (m_isChargingDash)
-            m_dashVisuals.RotateForDash(movementRelative);
+            m_dashVisuals.RotateForDash(dashDir);
+
+        // Update the character visuals so the character always faces the correct direction
+        // Also, update the animation controls to match the movement speeds
+        m_charVisuals.UpdateOrientation(movementRelative);
+        m_charVisuals.UpdateAnimation(m_lastMoveInput.magnitude, m_isChargingDash);
+
+        // Store the last non-zero movement input for next time in case it is needed
+        // This way, we can still dash without having to point in a certain direction
+        if (movementRelative != Vector3.zero)
+            m_lastMovementDir = movementRelative;
     }
 
     private void FixedUpdate()

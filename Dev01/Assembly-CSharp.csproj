@@ -92,9 +92,10 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
     <Compile Include="Assets\Studio Assets\Scripts\Bumper_Controls.cs" />
-    <Compile Include="Assets\Studio Assets\Scripts\Bumper_DashVisuals.cs" />
+    <Compile Include="Assets\Studio Assets\Scripts\Bumper_VisualsDash.cs" />
     <Compile Include="Assets\Jammo-Character\Scripts\MovementInput.cs" />
     <Compile Include="Assets\Jammo-Character\Scripts\CharacterSkinController.cs" />
+    <Compile Include="Assets\Studio Assets\Scripts\Bumper_VisualsCharacter.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

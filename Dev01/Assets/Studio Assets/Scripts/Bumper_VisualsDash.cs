@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Bumper_DashVisuals : MonoBehaviour
+public class Bumper_VisualsDash : MonoBehaviour
 {
     //--- Public Variables ---//
     public float m_dashRotSpeed;
@@ -46,7 +46,10 @@ public class Bumper_DashVisuals : MonoBehaviour
         // We want to rotate so that it looks like we are rolling in the correct direction
         // Therefore, the movement direction is the 'forward' vector. World up is the 'up' vector
         // So, the vector the rotation axis is the 'right' vector that matches the other two
-        Vector3 rotationAxis = Vector3.Cross(Vector3.up, _movementDir);
-        this.transform.Rotate(rotationAxis, Time.deltaTime * m_dashRotSpeed, Space.World);
+        if (_movementDir != Vector3.zero)
+        {
+            Vector3 rotationAxis = Vector3.Cross(Vector3.up, _movementDir);
+            this.transform.Rotate(rotationAxis, Time.deltaTime * m_dashRotSpeed, Space.World);
+        }
     }
 }
