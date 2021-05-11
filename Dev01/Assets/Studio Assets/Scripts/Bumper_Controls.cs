@@ -4,6 +4,9 @@ using UnityEngine.InputSystem;
 public class Bumper_Controls : MonoBehaviour
 {
     //--- Public Variables ---//
+    [Header("Visuals")]
+    public Bumper_DashVisuals m_dashVisuals;
+
     [Header("Movement Controls")]
     public float m_maxVel;
     public float m_moveForce;
@@ -44,6 +47,9 @@ public class Bumper_Controls : MonoBehaviour
         m_isChargingDash = false;
         m_isGrounded = true;
         m_baseDragVals = new Vector2(m_body.drag, m_body.angularDrag);
+
+        // Disable the dash visuals at the start so the ball just rotates normally with physics
+        m_dashVisuals.enabled = false;
     }
 
     private void Update()
@@ -66,6 +72,8 @@ public class Bumper_Controls : MonoBehaviour
                 m_isChargingDash = true;
                 m_dashChargeTime += Time.deltaTime;
 
+                m_dashVisuals.enabled = true;
+
                 // Apply high drag on the drag but not in the air
                 m_body.drag = (m_isGrounded) ? Mathf.Infinity : m_baseDragVals.x;
                 m_body.angularDrag = (m_isGrounded) ? Mathf.Infinity : m_baseDragVals.y;
@@ -82,6 +90,8 @@ public class Bumper_Controls : MonoBehaviour
                 m_body.drag = m_baseDragVals.x;
                 m_body.angularDrag = m_baseDragVals.y;
 
+                m_dashVisuals.enabled = false;
+
                 m_isChargingDash = false;
                 m_dashChargeTime = 0.0f;
                 m_lastDashInput = InputActionPhase.Waiting; // Need to reset this because the input won't get passed again so it will stay at 'Cancelled'
@@ -97,8 +107,13 @@ public class Bumper_Controls : MonoBehaviour
             }
         }
 
+        // TEMP: Update the charging indicator so it shows the charge amount
         float chargeT = Mathf.Clamp(m_dashChargeTime / m_dashChargeLength, 0.0f, 1.0f);
         m_dashIndicatorObj.material.color = Color.Lerp(Color.red, Color.green, chargeT);
+
+        // Update the dash visuals so the ball spins independently to match the desired dash direction
+        if (m_isChargingDash)
+            m_dashVisuals.RotateForDash(movementRelative);
     }
 
     private void FixedUpdate()
