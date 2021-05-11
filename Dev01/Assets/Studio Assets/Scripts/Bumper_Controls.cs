@@ -17,6 +17,7 @@ public class Bumper_Controls : MonoBehaviour
     [Header("Dashing")]
     public float m_dashChargeLength;
     public float m_maxDashForce;
+    public float m_dashCooldownLength;
     public Renderer m_dashIndicatorObj;
 
 
@@ -31,6 +32,8 @@ public class Bumper_Controls : MonoBehaviour
     private bool m_isChargingDash;
     private bool m_isGrounded;
     private Vector2 m_baseDragVals;
+    private float m_currentDashCooldown;
+    private bool m_dashCoolingDown;
 
 
 
@@ -47,6 +50,8 @@ public class Bumper_Controls : MonoBehaviour
         m_isChargingDash = false;
         m_isGrounded = true;
         m_baseDragVals = new Vector2(m_body.drag, m_body.angularDrag);
+        m_currentDashCooldown = 0.0f;
+        m_dashCoolingDown = false;
 
         // Disable the dash visuals at the start so the ball just rotates normally with physics
         m_dashVisuals.enabled = false;
@@ -62,6 +67,18 @@ public class Bumper_Controls : MonoBehaviour
         movementRelative.y = 0.0f;
         movementRelative.Normalize();
 
+        // Check if the dash is ready again if it is currently on cooldown
+        if (m_dashCoolingDown)
+        {
+            m_currentDashCooldown += Time.deltaTime;
+
+            if (m_currentDashCooldown >= m_dashCooldownLength)
+            {
+                m_currentDashCooldown = 0.0f;
+                m_dashCoolingDown = false;
+            }
+        }
+
         // Determine the different effects depending on if dash is being used or not
         switch (m_lastDashInput)
         {
@@ -69,14 +86,17 @@ public class Bumper_Controls : MonoBehaviour
             case InputActionPhase.Started:
             case InputActionPhase.Performed:
             {
-                m_isChargingDash = true;
-                m_dashChargeTime += Time.deltaTime;
+                if (!m_dashCoolingDown)
+                {
+                    m_isChargingDash = true;
+                    m_dashChargeTime += Time.deltaTime;
 
-                m_dashVisuals.enabled = true;
+                    m_dashVisuals.enabled = true;
 
-                // Apply high drag on the drag but not in the air
-                m_body.drag = (m_isGrounded) ? Mathf.Infinity : m_baseDragVals.x;
-                m_body.angularDrag = (m_isGrounded) ? Mathf.Infinity : m_baseDragVals.y;
+                    // Apply high drag on the ground but not in the air
+                    m_body.drag = (m_isGrounded) ? Mathf.Infinity : m_baseDragVals.x;
+                    m_body.angularDrag = (m_isGrounded) ? Mathf.Infinity : m_baseDragVals.y;
+                }
 
                 break;
             }
@@ -84,13 +104,17 @@ public class Bumper_Controls : MonoBehaviour
             // End dash charging, actually trigger dash force
             case InputActionPhase.Canceled:
             {
-                float dashChargePercent = Mathf.Clamp(m_dashChargeTime / m_dashChargeLength, 0.0f, 1.0f);
-                m_nextForceToAdd = movementRelative * dashChargePercent * m_maxDashForce;
+                if (m_isGrounded)
+                {
+                    float dashChargePercent = Mathf.Clamp(m_dashChargeTime / m_dashChargeLength, 0.0f, 1.0f);
+                    m_body.AddForce(movementRelative * dashChargePercent * m_maxDashForce, ForceMode.Impulse);
+                }
 
                 m_body.drag = m_baseDragVals.x;
                 m_body.angularDrag = m_baseDragVals.y;
 
                 m_dashVisuals.enabled = false;
+                m_dashCoolingDown = true;
 
                 m_isChargingDash = false;
                 m_dashChargeTime = 0.0f;
@@ -125,12 +149,14 @@ public class Bumper_Controls : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        // Check if the object that was collided with is on one of the ground layers
         if (m_groundLayers == (m_groundLayers | (1 << collision.gameObject.layer)))
             m_isGrounded = true;
     }
 
     private void OnCollisionExit(Collision collision)
     {
+        // Check if the object that was collided with is on one of the ground layers
         if (m_groundLayers == (m_groundLayers | (1 << collision.gameObject.layer)))
             m_isGrounded = false;
     }
