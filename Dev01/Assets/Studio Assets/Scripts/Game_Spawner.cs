@@ -18,35 +18,25 @@ public class Game_Spawner : MonoBehaviour
         {
             // Spawn the object
             var spawnLoc = m_spawnLocations[i];
-            GameObject objectToSpawn = (i < config.m_numRealPlayers) ? config.m_playerPrefab : config.m_aiPrefab;
+            bool isAI = (i >= config.m_numRealPlayers);
+            GameObject objectToSpawn = (isAI) ? config.m_aiPrefab : config.m_playerPrefab;
             var objectInstance = Instantiate(objectToSpawn, spawnLoc.position, spawnLoc.rotation);
 
             // Tell the player (or AI) what id they are
             var bumperConfig = objectInstance.GetComponent<Bumper_Configuration>();
-            bumperConfig.Init(i, config.m_playerColours[i]);
+            bumperConfig.Init(i, config.m_playerColours[i], isAI);
             spawnedBumpers.Add(bumperConfig);
         }
 
         return spawnedBumpers;
     }
 
-    //public List<Bumper_Configuration> SpawnPlayers(int _numRealPlayers, Color[] _playerColors, GameObject _playerPrefab, GameObject _aiPrefab)
-    //{
-    //    var spawnedBumpers = new List<Bumper_Configuration>();
+    public void RespawnPlayer(Bumper_Configuration _player)
+    {
+        var spawnLoc = m_spawnLocations[_player.GetID()];
+        _player.transform.position = spawnLoc.position;
+        _player.transform.rotation = spawnLoc.rotation;
 
-    //    for (int i = 0; i < 4/*i < Game_Configuration.MAX_PLAYER_COUNT*/; i++)
-    //    {
-    //        // Spawn the object
-    //        var spawnLoc = m_spawnLocations[i];
-    //        GameObject objectToSpawn = (i < _numRealPlayers) ? _playerPrefab : _aiPrefab;
-    //        var objectInstance = Instantiate(objectToSpawn, spawnLoc.position, spawnLoc.rotation);
-
-    //        // Tell the player (or AI) what Id they are
-    //        var bumperConfig = objectInstance.GetComponent<Bumper_Configuration>();
-    //        bumperConfig.Init(i, _playerColors[i]);
-    //        spawnedBumpers.Add(bumperConfig);
-    //    }
-
-    //    return spawnedBumpers;
-    //}
+        _player.GetComponent<Bumper_Controls>().ResetValues();
+    }
 }

@@ -45,19 +45,8 @@ public class Bumper_Controls : MonoBehaviour
         // Init the private variables
         m_body = GetComponent<Rigidbody>();
         m_cam = Camera.main;
-        m_lastMoveInput = Vector2.zero;
-        m_lastDashInput = InputActionPhase.Disabled;
-        m_nextForceToAdd = Vector3.zero;
-        m_dashChargeTime = 0.0f;
-        m_isChargingDash = false;
-        m_isGrounded = false;
         m_baseDragVals = new Vector2(m_body.drag, m_body.angularDrag);
-        m_currentDashCooldown = 0.0f;
-        m_dashCoolingDown = false;
-        m_lastMovementDir = transform.forward;
-
-        // Disable the dash visuals at the start so the ball just rotates normally with physics
-        m_dashVisuals.enabled = false;
+        ResetValues();
     }
 
     private void Update()
@@ -179,6 +168,28 @@ public class Bumper_Controls : MonoBehaviour
             m_isGrounded = false;
     }
 
+
+
+    //--- Methods ---//
+    public void ResetValues()
+    {
+        m_body.velocity = Vector3.zero;
+        m_body.angularVelocity = Vector3.zero;
+
+        m_lastMoveInput = Vector2.zero;
+        m_lastDashInput = InputActionPhase.Disabled;
+        m_nextForceToAdd = Vector3.zero;
+        m_dashChargeTime = 0.0f;
+        m_isChargingDash = false;
+        m_isGrounded = false;
+
+        m_currentDashCooldown = 0.0f;
+        m_dashCoolingDown = false;
+        m_lastMovementDir = transform.forward;
+
+        // Disable the dash visuals at the start so the ball just rotates normally with physics
+        m_dashVisuals.enabled = false;
+    }
 
 
     //--- Input Callbacks ---//

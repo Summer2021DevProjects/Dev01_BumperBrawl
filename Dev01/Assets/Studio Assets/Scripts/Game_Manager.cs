@@ -4,20 +4,29 @@ using System.Collections.Generic;
 public class Game_Manager : MonoBehaviour
 {
     //--- Player Data Struct - Keeps track of important game info for each player ---//
-    private struct Game_PlayerData
+    private class Game_PlayerData
     {
-        int m_id;
-        Color m_color;
-        bool m_isAI;
-        int m_numLives;
-        int m_finalPlacing;
+        public Game_PlayerData(int _startingLives)
+        {
+            m_numLives = _startingLives;
+            m_finalPlacing = -1;
+            m_isDead = false;
+        }
+
+        public int m_numLives;
+        public int m_finalPlacing;
+        public bool m_isDead;
     }
 
 
 
     //--- Private Variables ---//
-    private Game_Spawner m_playerSpawner;
     private Dictionary<Bumper_Configuration, Game_PlayerData> m_playerData;
+    private Game_Configuration m_config;
+    private Game_Spawner m_playerSpawner;
+    private int m_nextPlacing;
+    private bool m_gameCountdownEnabled;
+    private float m_gameTimeLeft;
 
 
 
@@ -25,7 +34,11 @@ public class Game_Manager : MonoBehaviour
     private void Awake()
     {
         // Init the private variables
+        m_config = Game_Configuration.m_instance;
         m_playerSpawner = FindObjectOfType<Game_Spawner>();
+        m_nextPlacing = m_config.MAX_PLAYER_COUNT;
+        m_gameCountdownEnabled = false;
+        m_gameTimeLeft = (float)m_config.m_gameDurationSec;
     }
 
     private void Start()
@@ -33,9 +46,16 @@ public class Game_Manager : MonoBehaviour
         StartRound();
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void Update()
     {
-        Debug.Log("Trigger Detection With: " + other.name);
+        // Continue the game clock countdown. If time is up, the game ends
+        if (m_gameCountdownEnabled)
+        {
+            m_gameTimeLeft -= Time.deltaTime;
+
+            if (m_gameTimeLeft <= 0.0f)
+                OnGameOver();
+        }
     }
 
 
@@ -43,11 +63,47 @@ public class Game_Manager : MonoBehaviour
     //--- Methods ---//
     public void StartRound()
     {
-        var spawnedPlayers = m_playerSpawner.SpawnPlayers();
+        TriggerPlayerSpawning();
+        m_gameCountdownEnabled = true;
     }
 
     public void OnPlayerDeath(Bumper_Configuration _player)
     {
-        Debug.Log(_player.name + " has died");
+        // Lower the player life count
+        var playerData = m_playerData[_player];
+        playerData.m_numLives--;
+
+        // If the player is out of lives, they are now officially dead
+        // Otherwise, they should get respawned
+        if (playerData.m_numLives <= 0)
+        {
+            playerData.m_isDead = true;
+            playerData.m_finalPlacing = m_nextPlacing--;
+
+            // If there is only one player left, the game is now over
+            if (m_nextPlacing <= 1)
+                OnGameOver();
+        }
+        else
+        {
+            m_playerSpawner.RespawnPlayer(_player);
+        }
+    }
+
+    public void OnGameOver()
+    {
+        Debug.Log("GAME OVER");
+    }
+
+
+
+    //--- Utility Methods ---//
+    private void TriggerPlayerSpawning()
+    {
+        var spawnedPlayers = m_playerSpawner.SpawnPlayers();
+
+        m_playerData = new Dictionary<Bumper_Configuration, Game_PlayerData>();
+        foreach (var player in spawnedPlayers)
+            m_playerData.Add(player, new Game_PlayerData(m_config.m_bumperLives));
     }
 }
