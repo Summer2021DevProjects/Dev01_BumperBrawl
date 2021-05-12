@@ -50,7 +50,7 @@ public class Bumper_Controls : MonoBehaviour
         m_nextForceToAdd = Vector3.zero;
         m_dashChargeTime = 0.0f;
         m_isChargingDash = false;
-        m_isGrounded = true;
+        m_isGrounded = false;
         m_baseDragVals = new Vector2(m_body.drag, m_body.angularDrag);
         m_currentDashCooldown = 0.0f;
         m_dashCoolingDown = false;
