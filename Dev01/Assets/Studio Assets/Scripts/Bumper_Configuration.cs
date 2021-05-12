@@ -5,6 +5,7 @@ public class Bumper_Configuration : MonoBehaviour
     //--- Public Variables ---//
     public Renderer m_ring;
     public Transform m_characterParent;
+    public Renderer m_characterEyes;
 
 
 
@@ -23,6 +24,7 @@ public class Bumper_Configuration : MonoBehaviour
         this.m_isAI = _isAI;
 
         m_ring.material.color = _color;
+        m_characterEyes.material.SetColor("_EmissionColor", _color);
         foreach (var charRend in m_characterParent.GetComponentsInChildren<Renderer>())
             charRend.material.color = _color;
     }
@@ -31,4 +33,6 @@ public class Bumper_Configuration : MonoBehaviour
 
     //--- Setters and Getters ---//
     public int GetID() { return m_id; }
+    public Color GetColor() { return m_color; }
+    public bool GetIsAI() { return m_isAI; }
 }

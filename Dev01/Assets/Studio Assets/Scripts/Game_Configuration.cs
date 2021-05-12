@@ -19,7 +19,7 @@ public class Game_Configuration : MonoBehaviour
 
     [Header("Rule Configuration")]
     public int m_gameDurationSec;
-    public int m_bumperLives;
+    public int m_startingLives;
     public float m_startCountdownDurationSec;
 
 

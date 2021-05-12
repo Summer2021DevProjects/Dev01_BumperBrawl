@@ -372,6 +372,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ring: {fileID: 8017140997562471182}
   m_characterParent: {fileID: 1664795517069129266}
+  m_characterEyes: {fileID: 57780264837454109}
 --- !u!1 &5935813017062858722
 GameObject:
   m_ObjectHideFlags: 0
@@ -485,6 +486,11 @@ GameObject:
 --- !u!4 &1664795517069129266 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 82a2914d8f86c62488456950c8330e38, type: 3}
+  m_PrefabInstance: {fileID: 5935813016725019944}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &57780264837454109 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 5957550532341187637, guid: 82a2914d8f86c62488456950c8330e38, type: 3}
   m_PrefabInstance: {fileID: 5935813016725019944}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5935813017421442508

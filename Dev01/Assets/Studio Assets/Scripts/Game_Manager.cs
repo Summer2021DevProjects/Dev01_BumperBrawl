@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using System.Collections.Generic;
 
 public class Game_Manager : MonoBehaviour
@@ -17,6 +18,13 @@ public class Game_Manager : MonoBehaviour
         public int m_finalPlacing;
         public bool m_isDead;
     }
+
+
+
+    //--- Public Events ---//
+    public UnityEvent<int, List<Bumper_Configuration>> OnRoundStart { get; } = new UnityEvent<int, List<Bumper_Configuration>>();
+    public UnityEvent<int, int> OnPlayerLifeLost { get; } = new UnityEvent<int, int>();
+    public UnityEvent<float> OnTimerChanged { get; } = new UnityEvent<float>();
 
 
 
@@ -52,6 +60,7 @@ public class Game_Manager : MonoBehaviour
         if (m_gameCountdownEnabled)
         {
             m_gameTimeLeft -= Time.deltaTime;
+            OnTimerChanged.Invoke(m_gameTimeLeft);
 
             if (m_gameTimeLeft <= 0.0f)
                 OnGameOver();
@@ -65,6 +74,7 @@ public class Game_Manager : MonoBehaviour
     {
         TriggerPlayerSpawning();
         m_gameCountdownEnabled = true;
+        OnRoundStart.Invoke(m_config.m_startingLives, new List<Bumper_Configuration>(m_playerData.Keys));
     }
 
     public void OnPlayerDeath(Bumper_Configuration _player)
@@ -72,6 +82,7 @@ public class Game_Manager : MonoBehaviour
         // Lower the player life count
         var playerData = m_playerData[_player];
         playerData.m_numLives--;
+        OnPlayerLifeLost.Invoke(_player.GetID(), playerData.m_numLives);
 
         // If the player is out of lives, they are now officially dead
         // Otherwise, they should get respawned
@@ -104,6 +115,6 @@ public class Game_Manager : MonoBehaviour
 
         m_playerData = new Dictionary<Bumper_Configuration, Game_PlayerData>();
         foreach (var player in spawnedPlayers)
-            m_playerData.Add(player, new Game_PlayerData(m_config.m_bumperLives));
+            m_playerData.Add(player, new Game_PlayerData(m_config.m_startingLives));
     }
 }
