@@ -194,6 +194,7 @@ public class Bumper_Controls : MonoBehaviour
 
     public void OnResetInput(InputAction.CallbackContext _context)
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+        if (_context.started)
+            UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
     }
 }

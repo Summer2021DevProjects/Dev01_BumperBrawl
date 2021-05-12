@@ -9,23 +9,44 @@ public class Game_Spawner : MonoBehaviour
 
 
     //--- Methods ---//
-    public List<GameObject> SpawnPlayers(int _numRealPlayers, Color[] _playerColors, GameObject _playerPrefab, GameObject _aiPrefab)
+    public List<Bumper_Configuration> SpawnPlayers()
     {
-        var spawnedBumpers = new List<GameObject>();
+        var config = Game_Configuration.m_instance;
+        var spawnedBumpers = new List<Bumper_Configuration>();
 
-        for (int i = 0; i < Game_Configuration.MAX_PLAYER_COUNT; i++)
+        for (int i = 0; i < config.MAX_PLAYER_COUNT; i++)
         {
             // Spawn the object
             var spawnLoc = m_spawnLocations[i];
-            GameObject objectToSpawn = (i < _numRealPlayers) ? _playerPrefab : _aiPrefab;
+            GameObject objectToSpawn = (i < config.m_numRealPlayers) ? config.m_playerPrefab : config.m_aiPrefab;
             var objectInstance = Instantiate(objectToSpawn, spawnLoc.position, spawnLoc.rotation);
-            spawnedBumpers.Add(objectInstance);
 
-            // Tell the player (or AI) what Id they are
+            // Tell the player (or AI) what id they are
             var bumperConfig = objectInstance.GetComponent<Bumper_Configuration>();
-            bumperConfig.Init(i, _playerColors[i]);
+            bumperConfig.Init(i, config.m_playerColours[i]);
+            spawnedBumpers.Add(bumperConfig);
         }
 
         return spawnedBumpers;
     }
+
+    //public List<Bumper_Configuration> SpawnPlayers(int _numRealPlayers, Color[] _playerColors, GameObject _playerPrefab, GameObject _aiPrefab)
+    //{
+    //    var spawnedBumpers = new List<Bumper_Configuration>();
+
+    //    for (int i = 0; i < 4/*i < Game_Configuration.MAX_PLAYER_COUNT*/; i++)
+    //    {
+    //        // Spawn the object
+    //        var spawnLoc = m_spawnLocations[i];
+    //        GameObject objectToSpawn = (i < _numRealPlayers) ? _playerPrefab : _aiPrefab;
+    //        var objectInstance = Instantiate(objectToSpawn, spawnLoc.position, spawnLoc.rotation);
+
+    //        // Tell the player (or AI) what Id they are
+    //        var bumperConfig = objectInstance.GetComponent<Bumper_Configuration>();
+    //        bumperConfig.Init(i, _playerColors[i]);
+    //        spawnedBumpers.Add(bumperConfig);
+    //    }
+
+    //    return spawnedBumpers;
+    //}
 }
