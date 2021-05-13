@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
 //--- Player Data Struct - Keeps track of important game info for each player ---//
@@ -27,6 +28,7 @@ public class Game_Manager : MonoBehaviour
     public UnityEvent<int, List<Bumper_Configuration>> OnRoundStart { get; } = new UnityEvent<int, List<Bumper_Configuration>>();
     public UnityEvent<int, int> OnPlayerLifeLost { get; } = new UnityEvent<int, int>();
     public UnityEvent<float> OnTimerChanged { get; } = new UnityEvent<float>();
+    public string m_endScreenSceneName;
 
 
 
@@ -109,7 +111,12 @@ public class Game_Manager : MonoBehaviour
 
     public void OnGameOver()
     {
-        Debug.Log("GAME OVER");
+        // Pass the final game result data to the end screen
+        List<Game_PlayerData> finalResults = new List<Game_PlayerData>(this.m_playerData.Values);
+        EndScreen_Controller.StoreGameResults(finalResults);
+
+        // Move to the end screen
+        SceneManager.LoadScene(m_endScreenSceneName);
     }
 
 
