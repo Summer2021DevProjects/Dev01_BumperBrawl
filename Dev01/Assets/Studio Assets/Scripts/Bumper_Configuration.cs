@@ -13,6 +13,7 @@ public class Bumper_Configuration : MonoBehaviour
     private int m_id;
     private Color m_color;
     private bool m_isAI;
+    private string m_name;
 
 
 
@@ -22,11 +23,12 @@ public class Bumper_Configuration : MonoBehaviour
         this.m_id = _id;
         this.m_color = _color;
         this.m_isAI = _isAI;
+        this.m_name = (_isAI) ? "AI" : "P" + (this.m_id + 1).ToString();
 
-        m_ring.material.color = _color;
-        m_characterEyes.material.SetColor("_EmissionColor", _color);
-        foreach (var charRend in m_characterParent.GetComponentsInChildren<Renderer>())
-            charRend.material.color = _color;
+        //m_ring.material.color = _color;
+        //m_characterEyes.material.SetColor("_EmissionColor", _color);
+        //foreach (var charRend in m_characterParent.GetComponentsInChildren<Renderer>())
+        //    charRend.material.color = _color;
     }
 
 
@@ -35,4 +37,5 @@ public class Bumper_Configuration : MonoBehaviour
     public int GetID() { return m_id; }
     public Color GetColor() { return m_color; }
     public bool GetIsAI() { return m_isAI; }
+    public string GetName() { return m_name; }
 }

@@ -2,25 +2,27 @@
 using UnityEngine.Events;
 using System.Collections.Generic;
 
-public class Game_Manager : MonoBehaviour
+//--- Player Data Struct - Keeps track of important game info for each player ---//
+public class Game_PlayerData
 {
-    //--- Player Data Struct - Keeps track of important game info for each player ---//
-    private class Game_PlayerData
+    public Game_PlayerData(int _startingLives, Bumper_Configuration _bumperConfig)
     {
-        public Game_PlayerData(int _startingLives)
-        {
-            m_numLives = _startingLives;
-            m_finalPlacing = -1;
-            m_isDead = false;
-        }
-
-        public int m_numLives;
-        public int m_finalPlacing;
-        public bool m_isDead;
+        m_numLives = _startingLives;
+        //m_finalPlacing = -1;
+        m_isDead = false;
+        m_bumperConfig = _bumperConfig;
+        m_survivalTime = -1.0f;
     }
 
+    public Bumper_Configuration m_bumperConfig;
+    public int m_numLives;
+    //public int m_finalPlacing;
+    public bool m_isDead;
+    public float m_survivalTime;
+}
 
-
+public class Game_Manager : MonoBehaviour
+{
     //--- Public Events ---//
     public UnityEvent<int, List<Bumper_Configuration>> OnRoundStart { get; } = new UnityEvent<int, List<Bumper_Configuration>>();
     public UnityEvent<int, int> OnPlayerLifeLost { get; } = new UnityEvent<int, int>();
@@ -32,7 +34,8 @@ public class Game_Manager : MonoBehaviour
     private Dictionary<Bumper_Configuration, Game_PlayerData> m_playerData;
     private Game_Configuration m_config;
     private Game_Spawner m_playerSpawner;
-    private int m_nextPlacing;
+    private int m_playersLeft;
+    private float m_countdownStart;
     private bool m_gameCountdownEnabled;
     private float m_gameTimeLeft;
 
@@ -44,9 +47,10 @@ public class Game_Manager : MonoBehaviour
         // Init the private variables
         m_config = Game_Configuration.m_instance;
         m_playerSpawner = FindObjectOfType<Game_Spawner>();
-        m_nextPlacing = m_config.MAX_PLAYER_COUNT;
+        m_playersLeft = m_config.MAX_PLAYER_COUNT;
         m_gameCountdownEnabled = false;
-        m_gameTimeLeft = (float)m_config.m_gameDurationSec;
+        m_countdownStart = (float)m_config.m_gameDurationSec;
+        m_gameTimeLeft = m_countdownStart;
     }
 
     private void Start()
@@ -89,10 +93,12 @@ public class Game_Manager : MonoBehaviour
         if (playerData.m_numLives <= 0)
         {
             playerData.m_isDead = true;
-            playerData.m_finalPlacing = m_nextPlacing--;
+            playerData.m_survivalTime = m_countdownStart - m_gameTimeLeft;
+            //playerData.m_finalPlacing = m_nextPlacing--;
+            m_playersLeft--;
 
             // If there is only one player left, the game is now over
-            if (m_nextPlacing <= 1)
+            if (m_playersLeft <= 1)
                 OnGameOver();
         }
         else
@@ -115,6 +121,6 @@ public class Game_Manager : MonoBehaviour
 
         m_playerData = new Dictionary<Bumper_Configuration, Game_PlayerData>();
         foreach (var player in spawnedPlayers)
-            m_playerData.Add(player, new Game_PlayerData(m_config.m_startingLives));
+            m_playerData.Add(player, new Game_PlayerData(m_config.m_startingLives, player));
     }
 }

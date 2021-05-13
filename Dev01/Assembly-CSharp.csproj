@@ -105,6 +105,8 @@
     <Compile Include="Assets\Studio Assets\Scripts\Game_UI_Player.cs" />
     <Compile Include="Assets\Studio Assets\Scripts\Menu_ConfigOptionUI.cs" />
     <Compile Include="Assets\Studio Assets\Scripts\Menu_Controller.cs" />
+    <Compile Include="Assets\Studio Assets\Scripts\EndScreen_Controller.cs" />
+    <Compile Include="Assets\Studio Assets\Scripts\EndScreen_RankingUI.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
