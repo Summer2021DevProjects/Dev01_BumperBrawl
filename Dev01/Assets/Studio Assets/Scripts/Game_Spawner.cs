@@ -33,10 +33,11 @@ public class Game_Spawner : MonoBehaviour
 
     public void RespawnPlayer(Bumper_Configuration _player)
     {
+        _player.GetComponent<Bumper_Controls>().ResetValues();
+
         var spawnLoc = m_spawnLocations[_player.GetID()];
         _player.transform.position = spawnLoc.position;
         _player.transform.rotation = spawnLoc.rotation;
 
-        _player.GetComponent<Bumper_Controls>().ResetValues();
     }
 }
