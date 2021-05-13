@@ -168,7 +168,7 @@ public class @InputDefinitions : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""a7a1b7e1-c86e-4e91-8282-18ae08a2acd0"",
-                    ""path"": ""<Keyboard>/r"",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard and Mouse"",

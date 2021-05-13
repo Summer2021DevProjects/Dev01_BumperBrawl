@@ -25,10 +25,10 @@ public class Bumper_Configuration : MonoBehaviour
         this.m_isAI = _isAI;
         this.m_name = (_isAI) ? "AI" : "P" + (this.m_id + 1).ToString();
 
-        //m_ring.material.color = _color;
-        //m_characterEyes.material.SetColor("_EmissionColor", _color);
-        //foreach (var charRend in m_characterParent.GetComponentsInChildren<Renderer>())
-        //    charRend.material.color = _color;
+        m_ring.material.color = _color;
+        m_characterEyes.material.SetColor("_EmissionColor", _color);
+        foreach (var charRend in m_characterParent.GetComponentsInChildren<Renderer>())
+            charRend.material.color = _color;
     }
 
 
