@@ -205,9 +205,10 @@ GameObject:
   - component: {fileID: 5935813016836756956}
   - component: {fileID: 5935813016836756959}
   - component: {fileID: 251335398717420563}
+  - component: {fileID: 6609195578772808966}
   m_Layer: 0
   m_Name: Bumper
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -373,6 +374,20 @@ MonoBehaviour:
   m_ring: {fileID: 8017140997562471182}
   m_characterParent: {fileID: 1664795517069129266}
   m_characterEyes: {fileID: 57780264837454109}
+--- !u!114 &6609195578772808966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5935813016836756945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c5f7937dcc135f44b3db6144395c60c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_fxPrefab: {fileID: 1852920690445326658, guid: 5905581d7e8722f43a8def76a89c6888, type: 3}
+  m_targetTag: Player
 --- !u!1 &5935813017062858722
 GameObject:
   m_ObjectHideFlags: 0

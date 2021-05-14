@@ -107,6 +107,8 @@
     <Compile Include="Assets\Studio Assets\Scripts\Menu_Controller.cs" />
     <Compile Include="Assets\Studio Assets\Scripts\EndScreen_Controller.cs" />
     <Compile Include="Assets\Studio Assets\Scripts\EndScreen_RankingUI.cs" />
+    <Compile Include="Assets\Studio Assets\Scripts\Bumper_VisualsCollision.cs" />
+    <Compile Include="Assets\Studio Assets\Scripts\Util_FXAutoDestroy.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
