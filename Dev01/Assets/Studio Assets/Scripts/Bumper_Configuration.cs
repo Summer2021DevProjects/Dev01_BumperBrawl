@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class Bumper_Configuration : MonoBehaviour
 {
@@ -6,6 +7,7 @@ public class Bumper_Configuration : MonoBehaviour
     public Renderer m_ring;
     public Transform m_characterParent;
     public Renderer m_characterEyes;
+    public Image m_characterIcon; 
 
 
 
@@ -14,6 +16,8 @@ public class Bumper_Configuration : MonoBehaviour
     private Color m_color;
     private bool m_isAI;
     private string m_name;
+    private Vector3 m_iconOffset;
+    private Transform m_iconParent;
 
 
 
@@ -31,6 +35,18 @@ public class Bumper_Configuration : MonoBehaviour
             charRend.material.color = _color;
 
         GetComponentInChildren<Bumper_DashFX>().SetRingColour(_color);
+
+        m_characterIcon.color = _color;
+
+        //m_iconParent = m_characterIcon.GetComponentInParent<Canvas>().transform.parent;
+        //m_iconOffset = m_characterIcon.GetComponentInParent<Canvas>().transform.localPosition;
+        //m_characterIcon.GetComponentInParent<Canvas>().transform.parent = null;
+    }
+
+    private void LateUpdate()
+    {
+        m_characterIcon.GetComponentInParent<Canvas>().transform.forward = Camera.main.transform.position - m_characterIcon.transform.position;
+        //m_characterIcon.GetComponentInParent<Canvas>().transform.position = m_iconParent.transform.position + (2.0f * m_iconOffset);
     }
 
 

@@ -9,6 +9,11 @@ public class Bumper_Controls : MonoBehaviour
     public Bumper_DashFX m_dashFX;
     public Bumper_VisualsCharacter m_charVisuals;
 
+    [Header("Speed Lines")]
+    public Transform m_follower;
+    public GameObject m_speedLinesPrefab;
+    public float m_speedLinesThreshold;
+
     [Header("Movement Controls")]
     public float m_maxVel;
     public float m_moveForce;
@@ -36,6 +41,7 @@ public class Bumper_Controls : MonoBehaviour
     private float m_currentDashCooldown;
     private bool m_dashCoolingDown;
     private Vector3 m_lastMovementDir;
+    private GameObject m_activeSpeedLines;
 
 
 
@@ -148,6 +154,10 @@ public class Bumper_Controls : MonoBehaviour
         // This way, we can still dash without having to point in a certain direction
         if (movementRelative != Vector3.zero)
             m_lastMovementDir = movementRelative;
+
+        // Hide or show the speed lines depending on if the bumper is moving fast enough or not
+        if (m_activeSpeedLines == null && m_body.velocity.magnitude >= m_speedLinesThreshold)
+            m_activeSpeedLines = Instantiate(m_speedLinesPrefab, m_follower);
     }
 
     private void FixedUpdate()
@@ -189,6 +199,9 @@ public class Bumper_Controls : MonoBehaviour
         m_currentDashCooldown = 0.0f;
         m_dashCoolingDown = false;
         m_lastMovementDir = transform.forward;
+
+        if (m_activeSpeedLines)
+            Destroy(m_activeSpeedLines);
 
         // Disable the dash visuals at the start so the ball just rotates normally with physics
         m_dashVisuals.enabled = false;

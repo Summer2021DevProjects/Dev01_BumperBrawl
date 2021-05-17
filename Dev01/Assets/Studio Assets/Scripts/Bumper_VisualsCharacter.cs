@@ -18,13 +18,13 @@ public class Bumper_VisualsCharacter : MonoBehaviour
         m_parentOffset = this.transform.localPosition;
 
         // Separate from the parent so it rotates separately
-        this.transform.parent = null;
+        //this.transform.parent = null;
     }
 
     private void LateUpdate()
     {
         // Always move to match the parent position
-        this.transform.position = m_parentBumper.position + m_parentOffset;
+        //this.transform.position = m_parentBumper.position + m_parentOffset;
     }
 
 
@@ -42,5 +42,11 @@ public class Bumper_VisualsCharacter : MonoBehaviour
         // Update the animator so the character moves to match the actual bumper movement
         m_animator.SetFloat("MovementSpeed", _moveSpeed);
         m_animator.SetBool("IsDashing", _isChargingDash);
+    }
+
+    public void TriggerHurtAnimation()
+    {
+        if (!m_animator.IsInTransition(0))
+            m_animator.SetTrigger("Hurt");
     }
 }

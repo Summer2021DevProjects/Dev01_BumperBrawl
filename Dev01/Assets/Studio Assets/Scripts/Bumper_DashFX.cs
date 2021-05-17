@@ -25,13 +25,13 @@ public class Bumper_DashFX : MonoBehaviour
         m_parentOffset = m_wind_Systems.transform.localPosition;
 
         // Separate from the parent so it rotates separately
-        m_wind_Systems.transform.parent = null;
+        //m_wind_Systems.transform.parent = null;
     }
 
     private void LateUpdate()
     {
         // Always move to match the parent position
-        m_wind_Systems.transform.position = m_parentBumper.position + m_parentOffset;
+       // m_wind_Systems.transform.position = m_parentBumper.position + m_parentOffset;
     }
 
     public void UpdateEffect(float _chargePercentage)
