@@ -29,6 +29,8 @@ public class Bumper_Configuration : MonoBehaviour
         m_characterEyes.material.SetColor("_EmissionColor", _color);
         foreach (var charRend in m_characterParent.GetComponentsInChildren<Renderer>())
             charRend.material.color = _color;
+
+        GetComponentInChildren<Bumper_DashFX>().SetRingColour(_color);
     }
 
 

@@ -6,6 +6,7 @@ public class Bumper_Controls : MonoBehaviour
     //--- Public Variables ---//
     [Header("Visuals")]
     public Bumper_VisualsDash m_dashVisuals;
+    public Bumper_DashFX m_dashFX;
     public Bumper_VisualsCharacter m_charVisuals;
 
     [Header("Movement Controls")]
@@ -19,7 +20,6 @@ public class Bumper_Controls : MonoBehaviour
     public float m_dashChargeLength;
     public float m_maxDashForce;
     public float m_dashCooldownLength;
-    public Renderer m_dashIndicatorObj;
 
 
 
@@ -127,14 +127,17 @@ public class Bumper_Controls : MonoBehaviour
             }
         }
 
-        // TEMP: Update the charging indicator so it shows the charge amount
+        // Calculate the charge percentage
         float chargeT = Mathf.Clamp(m_dashChargeTime / m_dashChargeLength, 0.0f, 1.0f);
-        m_dashIndicatorObj.material.color = Color.Lerp(Color.red, Color.green, chargeT);
 
         // If there is no input currently on t
         // Update the dash visuals so the ball spins independently to match the desired dash direction
         if (m_isChargingDash)
             m_dashVisuals.RotateForDash(dashDir);
+
+        // Update the dash FX
+        m_dashFX.UpdateMoveDirection(dashDir);
+        m_dashFX.UpdateEffect(chargeT);
 
         // Update the character visuals so the character always faces the correct direction
         // Also, update the animation controls to match the movement speeds
