@@ -68,7 +68,9 @@ public class Bumper_DashFX : MonoBehaviour
     public void SetRingColour(Color _color)
     {
         var ringMain = m_colourRing_System.main;
-        ringMain.startColor = _color;
+        float alpha = ringMain.startColor.color.a;
+        Color colorWithAlpha = new Color(_color.r, _color.g, _color.b, alpha);
+        ringMain.startColor = colorWithAlpha;
     }
 
     public void UpdateMoveDirection(Vector3 _newDirection)
