@@ -134,7 +134,7 @@ public class Bumper_Controls : MonoBehaviour
         }
 
         // Calculate the charge percentage
-        float chargeT = Mathf.Clamp(m_dashChargeTime / m_dashChargeLength, 0.0f, 1.0f);
+        float chargeT = CalcChargePercent();
 
         // If there is no input currently on t
         // Update the dash visuals so the ball spins independently to match the desired dash direction
@@ -224,4 +224,15 @@ public class Bumper_Controls : MonoBehaviour
         if (_context.started)
             UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
     }
+
+
+
+    //--- Setters ---//
+    public void SetLastMoveInput(Vector2 _moveInput) { m_lastMoveInput = _moveInput; }
+    public void SetLastDashInput(InputActionPhase _inputPhase) { m_lastDashInput = _inputPhase; }
+
+
+
+    //--- Utility Functions ---//
+    public float CalcChargePercent() { return Mathf.Clamp(m_dashChargeTime / m_dashChargeLength, 0.0f, 1.0f); }
 }

@@ -129,7 +129,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh665464
+  m_Name: pb_Mesh30736
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -558,6 +558,10 @@ PrefabInstance:
     - target: {fileID: 4226684148405054169, guid: cc21165ff0d178f40b9f2bc32d8cbbef, type: 3}
       propertyPath: m_Name
       value: _____ Game_Configuration _____
+      objectReference: {fileID: 0}
+    - target: {fileID: 4226684148405054174, guid: cc21165ff0d178f40b9f2bc32d8cbbef, type: 3}
+      propertyPath: m_numRealPlayers
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4226684148405054175, guid: cc21165ff0d178f40b9f2bc32d8cbbef, type: 3}
       propertyPath: m_RootOrder

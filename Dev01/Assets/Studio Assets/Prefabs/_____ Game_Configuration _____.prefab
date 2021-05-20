@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_playerPrefab: {fileID: 5935813016836756945, guid: 3d4bd5e579d2c3846b942870653a201b, type: 3}
-  m_aiPrefab: {fileID: 5935813016836756945, guid: 3d4bd5e579d2c3846b942870653a201b, type: 3}
+  m_aiPrefab: {fileID: 1641242526895372241, guid: 597a7323d0cb8d741af1f9ff2276458c, type: 3}
   m_numRealPlayers: 3
   m_playerColours:
   - {r: 1, g: 0.00000014702479, b: 0, a: 1}
